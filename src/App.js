@@ -1,5 +1,5 @@
 import { getByDisplayValue } from "@testing-library/react";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { useState } from "react";
 import './App.css';
 import app from './firebase.init'
@@ -24,11 +24,29 @@ function App() {
       .catch(error => {
         console.error('error massage: ', error)
       })
+
+
+
+  }
+
+  const signOutHandeler = () => {
+    signOut(auth)
+      .then(() => {
+        setUser({})
+      })
+      .catch(() => {
+        setUser({})
+      })
+
   }
   return (
     <div className="App">
       <h1>Sing in with Google</h1>
-      <button onClick={handelGoogleSignIn}>google sign in</button>
+      {
+        user.email ? <button onClick={signOutHandeler}>Sign out</button> :
+          <button onClick={handelGoogleSignIn}> Google sign in</button>
+      }
+
       <h3>Name: {user.displayName}</h3>
       <h3>Email: {user.email}</h3>
       <img src={user.photoURL} alt="" />
